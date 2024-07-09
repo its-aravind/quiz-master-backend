@@ -12,14 +12,13 @@ router.post('/create-quiz', async (req, res) => {
     await newQuiz.save();
     res.json({ msg: 'Quiz created successfully', newQuiz });
   } catch (err) {
-    console.log(err)
     if (err.code === 11000) { // Duplicate key error
       res.status(400).json({ msg: 'Quiz code already exists. Please choose a different code.' });
     } else {
       if (err.code === 11000) { // Duplicate key error
         res.status(400).json({ msg: 'Quiz code already exists. Please choose a different code.' });
       } else {
-        console.log(err);
+        console.error(err);
         res.status(500).json({ msg: 'Server error' });
       }
     }
@@ -55,7 +54,6 @@ router.post('/add-question', async (req, res) => {
   
       res.json({ msg: 'Question added successfully', quiz });
     } catch (err) {
-      console.log(err);
       res.status(500).json({ msg: 'Server error' });
     }
   });
@@ -68,7 +66,6 @@ router.get('/quiz/:quizCode',async (req, res) => {
     const quiz = await Quiz.find({quizCode:req.params.quizCode});
     res.json(quiz);
   } catch (err) {
-    console.error(err);
     res.status(500).json({ msg: 'Server error' });
   }
 });
@@ -94,7 +91,6 @@ router.get('/questions/:quizCode', async (req, res) => {
     // console.log('Received quizCode param:', quizCode); // Log the received param
 
     const questions = await Question.find({ quizCode:req.params.quizCode });
-    console.log('Fetched questions:', questions); // Log fetched questions for debugging
 
     res.json(questions);
   } catch (error) {
@@ -127,26 +123,6 @@ router.delete('/question/:id', async (req, res) => {
 
 
 // Fetch questions by quiz code
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
  module.exports = router;
